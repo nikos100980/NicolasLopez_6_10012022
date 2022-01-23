@@ -4,6 +4,8 @@ const userRoutes = require('./routes/users');
 const path = require('path');
 const sauceRoutes = require('./routes/sauce');
 
+// Ajout de variables d'environnement
+// require('dotenv').config();
 
 mongoose
   .connect(

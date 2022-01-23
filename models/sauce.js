@@ -1,3 +1,6 @@
+
+//----------------------------------------Le modéle incluant le schéma de la sauce 
+
 const mongoose = require('mongoose');
 
 const sauceSchema = mongoose.Schema({

@@ -1,4 +1,4 @@
-// Creation d'un middleware pour l'authentification
+//--------------------------------------------------------------------------- Creation d'un middleware pour l'authentification---------------------------------------------------------
 
 
 const jwt = require('jsonwebtoken');
