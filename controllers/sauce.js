@@ -2,6 +2,8 @@
 const Sauce = require("../models/sauce");
 const fs = require("fs");
 
+
+
 // Controller pour la creation de l'objet sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
@@ -40,17 +42,32 @@ exports.getOneSauce = (req, res, next) => {
 };
 // Controller pour modifier une sauce uniquement faites par l'utilisateur créateur
 exports.modifySauce = (req, res, next) => {
+console.log("----->ROUTE PUT: modyfySauce");
+console.log(req.params.id);
+console.log({_id: req.params.id});
+
+console.log("---->CONTENU:req.body");
+console.log(req.body);
+
+console.log("------>CONTENU PUT: req.file");
+console.log(req.file);
+
   if (req.file) {
-    Sauce.findOne({ _id: req.params.id }).then((sauce) => {
-      const fileName = sauce.imageUrl.split("/images/")[1];
-      fs.unlink(`images/${fileName}`, (err) => {
-        if (err) console.log(err);
-        else {
-          console.log("Image supprimée: " + fileName);
-        }
-      });
-    });
+      console.log("TRUE");
+    Sauce.findOne({ _id: req.params.id })
+      .then((sauce) => {
+          console.log("------->Le retour de la promesse");
+          console.log(sauce);
+        const fileName = sauce.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${fileName}`, (err) => {
+          if (err) throw (err);
+        });
+      })
+      .catch((error) => res.status(404).json({ error }));
+  } else {
+    console.log("Image supprimée: " );
   }
+
   //  Puis mise à jour de l'objet sauce
   const sauceObject = req.file
     ? {
@@ -67,7 +84,6 @@ exports.modifySauce = (req, res, next) => {
     .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
     .catch((error) => res.status(404).json({ error }));
 };
-
 
 // Controller pour supprimer l'objet sauce ainsi que la photo associé dans le dossier images
 

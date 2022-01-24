@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/users');
 const path = require('path');
 const sauceRoutes = require('./routes/sauce');
+const helmet = require('helmet');
 
 // Ajout de variables d'environnement
-// require('dotenv').config();
+ require('dotenv').config();
 
 mongoose
   .connect(
-    "mongodb+srv://nikos3101:PiuUEIVMg63YDy2z@cluster0.ss2hd.mongodb.net/test?retryWrites=true&w=majority",
+    process.env.DB_CONNECTION,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
@@ -17,6 +18,7 @@ mongoose
 
 const app = express();
 
+// app.use(helmet());
 
 app.use(express.json());
 
