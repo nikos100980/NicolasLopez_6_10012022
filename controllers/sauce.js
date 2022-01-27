@@ -1,5 +1,10 @@
 //------------------------------------------------------------------- les differents controllers---------------------------------------------------------
+
+
+
 const Sauce = require("../models/sauce");
+
+// Importation du module FS de node pour effectuer la suppression de fichiers notamment image 
 const fs = require("fs");
 
 // Controller pour la creation de l'objet sauce
@@ -54,8 +59,7 @@ exports.modifySauce = (req, res, next) => {
     // Suppression de l'image deja presente dans la BBD pour accepter a sa place la nouvelle image presente dans la requete
     Sauce.findOne({ _id: req.params.id })
       .then((sauce) => {
-        console.log("------->Le retour de la promesse");
-        console.log(sauce);
+        
         const fileName = sauce.imageUrl.split("/images/")[1];
         fs.unlink(`images/${fileName}`, (err) => {
           if (err) throw err;
@@ -63,7 +67,7 @@ exports.modifySauce = (req, res, next) => {
       })
       .catch((error) => res.status(404).json({ error }));
   } else {
-    console.log("Image supprimée: ");
+    // console.log("Image supprimée: ");
   }
 
   //  Ensuite on met a jour la fiche de la sauce 
@@ -79,7 +83,7 @@ exports.modifySauce = (req, res, next) => {
     { _id: req.params.id },
     { ...sauceObject, _id: req.params.id }
   )
-    .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
+    .then(() => res.status(200).json({ message: "Votre sauce a bien été modifiée !" }))
     .catch((error) => res.status(403).json({ error }));
 };
 
@@ -91,7 +95,7 @@ exports.deleteSauce = (req, res, next) => {
       const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
         Sauce.deleteOne({ _id: req.params.id })
-          .then(res.status(200).json({ message: "Sauce supprimée" }))
+          .then(res.status(200).json({ message: "Votre sauce a bien été supprimée" }))
           .catch((error) => res.status(400).json({ error }));
       });
     })

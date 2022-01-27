@@ -1,6 +1,7 @@
 
 //----------------------------------------Le modéle incluant le schéma de la sauce 
 
+// Importation du module MONGOOSE 
 const mongoose = require('mongoose');
 
 const sauceSchema = mongoose.Schema({
