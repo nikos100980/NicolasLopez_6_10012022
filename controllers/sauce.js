@@ -2,8 +2,6 @@
 const Sauce = require("../models/sauce");
 const fs = require("fs");
 
-
-
 // Controller pour la creation de l'objet sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
@@ -42,33 +40,33 @@ exports.getOneSauce = (req, res, next) => {
 };
 // Controller pour modifier une sauce uniquement faites par l'utilisateur créateur
 exports.modifySauce = (req, res, next) => {
-console.log("----->ROUTE PUT: modyfySauce");
-console.log(req.params.id);
-console.log({_id: req.params.id});
+  // console.log("----->ROUTE PUT: modyfySauce");
+  // console.log(req.params.id);
+  // console.log({ _id: req.params.id });
 
-console.log("---->CONTENU:req.body");
-console.log(req.body);
+  // console.log("---->CONTENU:req.body");
+  // console.log(req.body);
 
-console.log("------>CONTENU PUT: req.file");
-console.log(req.file);
+  // console.log("------>CONTENU PUT: req.file");
+  // console.log(req.file);
 
   if (req.file) {
-      console.log("TRUE");
+    // Suppression de l'image deja presente dans la BBD pour accepter a sa place la nouvelle image presente dans la requete
     Sauce.findOne({ _id: req.params.id })
       .then((sauce) => {
-          console.log("------->Le retour de la promesse");
-          console.log(sauce);
+        console.log("------->Le retour de la promesse");
+        console.log(sauce);
         const fileName = sauce.imageUrl.split("/images/")[1];
         fs.unlink(`images/${fileName}`, (err) => {
-          if (err) throw (err);
+          if (err) throw err;
         });
       })
       .catch((error) => res.status(404).json({ error }));
   } else {
-    console.log("Image supprimée: " );
+    console.log("Image supprimée: ");
   }
 
-  //  Puis mise à jour de l'objet sauce
+  //  Ensuite on met a jour la fiche de la sauce 
   const sauceObject = req.file
     ? {
         ...JSON.parse(req.body.sauce),
@@ -82,7 +80,7 @@ console.log(req.file);
     { ...sauceObject, _id: req.params.id }
   )
     .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
-    .catch((error) => res.status(404).json({ error }));
+    .catch((error) => res.status(403).json({ error }));
 };
 
 // Controller pour supprimer l'objet sauce ainsi que la photo associé dans le dossier images
@@ -99,7 +97,7 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
-// Controller permettant la gerstion des likes et dislikes
+// Controller permettant la gestion des likes et dislikes
 exports.likeSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {

@@ -1,4 +1,8 @@
+// -----------------------------------------------------------Configuration du module MULTER -------------------------------------------------
+
+// Importation du module MULTER afin de mettre en place le systeme de telechargement de fichiers sur notre API
 const multer = require('multer');
+
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
